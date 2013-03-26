@@ -1,3 +1,101 @@
-<h1>Hello World</h1>
-<h2>Edit Save</h2>
-aonasdfasdfasdfas
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name = "format-detection" content = "telephone=no"/>
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width;" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello Cordova Browser</title>
+        <style>
+            .touch {height: 0; width: 0; overflow: hidden; opacity: 0; 
+
+                -webkit-transition: all 1s ease-in;
+            }
+
+            .show-touch .touch {
+                height: auto;
+                width: auto;
+                opacity: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="touch">
+            <h4>Custom</h4>
+
+            <ul>
+                    <li> <a href="#" id="prompt">Prompt User</a> 
+                    <li> <a href="http://i.reddit.com">reddit.com</a> 
+                    <li> <a href="http://cheeaun.github.com/hackerweb/">Hacker news</a> 
+            </ul>
+        </div>
+        <div class="log"></div>
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="childbrowser.js"></script>
+        <script type="text/javascript">
+	        var logNode = 
+			    document.querySelector('.log');
+			var log = function(str) {
+			    logNode.innerHTML += str + '<br>';
+			}
+			var app = {
+			    initialize: function() {
+			        log('init app');
+			        this.bind();
+			    },
+			    bind: function() {
+			        log('bind app');
+			        document.addEventListener('deviceready', this.deviceready, false);
+			    },
+			    deviceready: function() {
+			        log('device ready event');
+			        
+			        document.body.className = 'show-touch';
+			    },
+			    showTouch: function() {
+
+			        document.body.className = 'show-touch';
+			    },
+			    launchInApp : function(url, windowName) {
+			        log('launching InAppBrowser...');
+			        url = url || 'http://www.google.com';
+			        windowName = windowName || '_blank';
+
+			        var ref = window.open(url, windowName, "location=yes");
+
+			        ref.addEventListener('loadstart', function(event) { log(event.type + ' - ' + event.url); });
+			        ref.addEventListener('loadstop', function(event) { log(event.type + ' - ' + event.url); });
+			        ref.addEventListener('exit', function(event) { log(event.type + ' - ' + event.url); });
+
+			        log('launched InAppBrowser...');
+
+			    },
+			    launchChildBrowser : function(url) {
+			        log('launchChildBrowser ...');
+			        url = url || 'http://www.google.com';
+
+			        log (window.plugins.childBrowser != undefined);
+			        var a = window.plugins.childBrowser.showWebPage(url, { showLocationBar: true });
+
+			        log('launched Child Browser...');
+			    }
+			};
+
+
+            log('page loaded');
+            log(location.href);
+            app.initialize();
+
+            var onClickPrompt = function(event) {
+                event.preventDefault();
+
+                var d = prompt("enter url?", 'http://');
+                log(d);
+                if (d) {
+                    app.launchInApp(d, '_self')
+                }
+            }
+            document.getElementById('prompt').addEventListener('click', onClickPrompt, false);
+        </script>
+    </body>
+</html>
