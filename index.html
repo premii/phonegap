@@ -23,21 +23,47 @@
         <div class="touch">
             <h4>Custom</h4>
 
-            <ul>
-                    <li> <a href="#" id="prompt">Prompt User</a> 
+            <ul> 
                     <li> <a href="http://i.reddit.com">reddit.com</a> 
                     <li> <a href="http://cheeaun.github.com/hackerweb/">Hacker news</a> 
+            </ul>
+
+            <ul>
+
+                    <li> <a href="#" id="prompt">Prompt User - Child window</a>
+                    <li> <a href="#" id="promptsame">Prompt User</a>
             </ul>
         </div>
         <div class="log"></div>
         <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="childbrowser.js"></script>
         <script type="text/javascript">
 	        var logNode = 
 			    document.querySelector('.log');
 			var log = function(str) {
 			    logNode.innerHTML += str + '<br>';
-			}
+			};
+
+
+		    var onError = function (message, jsurl, lineNumber) {
+		        //save error and send to server for example.
+		        var img = new window.Image();
+		        img.src = 'http://www.premii.com/log/error.php?apikey={apikey}&pageurl={pageurl}&linenumber={linenumber}&message={message}&js={jsurl}&t={t}'
+		            .replace("{jsurl}", encodeURIComponent(jsurl))
+		            .replace("{linenumber}", lineNumber)
+		            .replace('{pageurl}', window.location.href)
+		            .replace("{message}", encodeURIComponent(message))
+		            .replace("{apikey}", 'premii.com')
+		            .replace("{t}", +new Date());
+
+		        log(message);
+		        log(jsurl);
+		        log(linenumber);
+		        log('<hr>');
+		        return false;
+		    };
+
+   			window.onerror = onError;
+
 			var app = {
 			    initialize: function() {
 			        log('init app');
@@ -86,16 +112,22 @@
             log(location.href);
             app.initialize();
 
-            var onClickPrompt = function(event) {
+            var onClickPrompt = function(event, sameWindow) {
                 event.preventDefault();
 
+                sameWindow = sameWindow || false;
                 var d = prompt("enter url?", 'http://');
                 log(d);
                 if (d) {
-                    app.launchInApp(d, '_self')
+                	if (sameWindow) {
+                		location.href = d;
+                	} else {
+	                    app.launchInApp(d, '_self')
+                	}
                 }
             }
             document.getElementById('prompt').addEventListener('click', onClickPrompt, false);
+            document.getElementById('promptsame').addEventListener('click', function(event){ return onClickPrompt(event, true); }, false);
         </script>
     </body>
 </html>
