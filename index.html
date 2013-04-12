@@ -33,6 +33,7 @@
                     <li> <a href="#" id="prompt">Prompt User - Child window</a>
                     <li> <a href="#" id="promptsame">Prompt User</a>
             </ul>
+            <div class="history"></div>
         </div>
         <div class="log"></div>
         <script type="text/javascript" src="phonegap.js"></script>
@@ -77,6 +78,14 @@
 			        log('device ready event');
 			        
 			        document.body.className = 'show-touch';
+
+                    var localUrls = localStorage.getItem('urls') || '';
+                    localUrls = localUrls.split(',');
+                    var html= '';
+                    for(var i=0; i<localUrls.length; i++) {
+                        html += '<a href="'+localUrls[i]+'">'+localUrls[i]+'</a><br>';
+                    }
+                    document.querySelector('.history').innerHTML = html;
 			    },
 			    showTouch: function() {
 
@@ -117,8 +126,11 @@
 
                 sameWindow = sameWindow || false;
                 var d = prompt("enter url?", 'http://');
-                log(d);
+                var localUrls = localStorage.getItem('urls') || '';
+                localUrls = localUrls.split(',');
                 if (d) {
+                    localUrls.push(d);
+                    localStorage.setItem('urls', localUrls);
                 	if (sameWindow) {
                 		location.href = d;
                 	} else {
