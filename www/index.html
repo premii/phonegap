@@ -32,9 +32,8 @@
             </ul>
 
             <ul>
-
-                    <li> <a href="#" id="prompt">Prompt User - Child window</a>
-                    <li> <a href="#" id="promptsame">Prompt User</a>
+                    <li> <a href="#" id="prompt">Prompt User</a>
+                    <li> <a href="#" id="promptsame">Prompt User (inAppBrowser)</a>
             </ul>
             <h4>History</h4>
             <div class="history"></div>
@@ -68,6 +67,30 @@
 		    };
 
    			window.onerror = onError;
+            var iabRef = null;
+            function iabLoadStart(event) {
+                alert(event.type + ' - ' + event.url);
+            }
+
+            function iabLoadStop(event) {
+                alert(event.type + ' - ' + event.url);
+            }
+
+            function iabClose(event) {
+                alert(event.type);
+                iabRef.removeEventListener('loadstart', iabLoadStart);
+                iabRef.removeEventListener('loadstop', iabLoadStop);
+                iabRef.removeEventListener('exit', iabClose);
+            }
+
+            // Cordova is ready
+            //
+            function onDeviceReady() {
+                iabRef = window.open('http://apache.org', '_blank', 'location=yes');
+                iabRef.addEventListener('loadstart', iabLoadStart);
+                iabRef.addEventListener('loadstop', iabLoadStop);
+                iabRef.addEventListener('exit', iabClose);
+            }
 
 			var app = {
 			    initialize: function() {
@@ -90,6 +113,7 @@
                         html += '<a href="'+localUrls[i]+'">'+localUrls[i]+'</a><br>';
                     }
                     document.querySelector('.history').innerHTML = html;
+                    onDeviceReady();
 			    },
 			    showTouch: function() {
 
@@ -108,15 +132,6 @@
 
 			        log('launched InAppBrowser...');
 
-			    },
-			    launchChildBrowser : function(url) {
-			        log('launchChildBrowser ...');
-			        url = url || 'http://www.google.com';
-
-			        log (window.plugins.childBrowser != undefined);
-			        var a = window.plugins.childBrowser.showWebPage(url, { showLocationBar: true });
-
-			        log('launched Child Browser...');
 			    }
 			};
 
@@ -138,11 +153,11 @@
                 	if (sameWindow) {
                 		location.href = d;
                 	} else {
-	                    app.launchInApp(d, '_self')
+	                    app.launchInApp(d, '_blank')
                 	}
                 }
             }
-            document.getElementById('prompt').addEventListener('click', onClickPrompt, false);
+            document.getElementById('prompt').addEventListener('click', function(event){ return onClickPrompt(event, false); }, false);
             document.getElementById('promptsame').addEventListener('click', function(event){ return onClickPrompt(event, true); }, false);
         </script>
     </body>
