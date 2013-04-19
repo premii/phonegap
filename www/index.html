@@ -33,7 +33,7 @@
 
             <ul>
                     <li> <a href="#" id="prompt">Prompt User</a>
-                    <li> <a href="#" id="promptsame">Prompt User (inAppBrowser)</a>
+                    <li> <a href="#" id="prompt-inappappbrowser">Prompt User (inAppBrowser)</a>
             </ul>
             <h4>History</h4>
             <div class="history"></div>
@@ -69,15 +69,15 @@
    			window.onerror = onError;
             var iabRef = null;
             function iabLoadStart(event) {
-                alert(event.type + ' - ' + event.url);
+                log(event.type + ' - ' + event.url);
             }
 
             function iabLoadStop(event) {
-                alert(event.type + ' - ' + event.url);
+                log(event.type + ' - ' + event.url);
             }
 
             function iabClose(event) {
-                alert(event.type);
+                log(event.type);
                 iabRef.removeEventListener('loadstart', iabLoadStart);
                 iabRef.removeEventListener('loadstop', iabLoadStop);
                 iabRef.removeEventListener('exit', iabClose);
@@ -119,19 +119,17 @@
 
 			        document.body.className = 'show-touch';
 			    },
-			    launchInApp : function(url, windowName) {
+			    launchInApp : function(event) {
 			        log('launching InAppBrowser...');
-			        url = url || 'http://www.google.com';
-			        windowName = windowName || '_blank';
+			        var url = 'http://www.google.com';
 
-			        var ref = window.open(url, windowName, "location=yes");
+			        var ref = window.open(url, '_blank', "location=yes");
 
 			        ref.addEventListener('loadstart', function(event) { log(event.type + ' - ' + event.url); });
 			        ref.addEventListener('loadstop', function(event) { log(event.type + ' - ' + event.url); });
 			        ref.addEventListener('exit', function(event) { log(event.type + ' - ' + event.url); });
 
 			        log('launched InAppBrowser...');
-
 			    }
 			};
 
@@ -143,7 +141,6 @@
             var onClickPrompt = function(event, sameWindow) {
                 event.preventDefault();
 
-                sameWindow = sameWindow || false;
                 var d = prompt("enter url?", 'http://');
                 var localUrls = localStorage.getItem('urls') || '';
                 localUrls = localUrls.split(',');
@@ -153,12 +150,18 @@
                 	if (sameWindow) {
                 		location.href = d;
                 	} else {
-	                    app.launchInApp(d, '_blank')
+	                    app.launchInApp(d)
                 	}
                 }
-            }
-            document.getElementById('prompt').addEventListener('click', function(event){ return onClickPrompt(event, false); }, false);
-            document.getElementById('promptsame').addEventListener('click', function(event){ return onClickPrompt(event, true); }, false);
+            };
+            var inAppBrowser = function(event) {
+                onClickPrompt(event, false);
+            };
+            var inSameView = function(event) {
+                onClickPrompt(event, true);
+            };
+            document.getElementById('prompt').addEventListener('click', inSameView, false);
+            document.getElementById('prompt-inappappbrowser').addEventListener('click', inAppBrowser, false);
         </script>
     </body>
 </html>
