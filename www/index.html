@@ -95,9 +95,9 @@
 
 			        document.body.className = 'show-touch';
 			    },
-			    launchInApp : function(event) {
+			    launchInApp : function(url) {
 			        log('launching InAppBrowser...');
-			        var url = 'http://www.google.com';
+			        url = url || 'http://www.google.com';
 
 			        var ref = window.open(url, '_blank', "location=yes");
 
@@ -136,6 +136,7 @@
             var inSameView = function(event) {
                 onClickPrompt(event, true);
             };
+
             document.getElementById('prompt').addEventListener('click', inSameView, false);
             document.getElementById('prompt-inappappbrowser').addEventListener('click', inAppBrowser, false);
         </script>
