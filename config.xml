@@ -71,6 +71,10 @@
     <icon src="res/icon/ios/Icon@2x.png"         gap:platform="ios"        width="114" height="114" />
     <icon src="res/icon/ios/Icon-72@2x.png"         gap:platform="ios"        width="144" height="144" />
 
+    <gap:splash src="res/screen/ios/splash-320x480.png"         gap:platform="ios"     width="320" height="480" />
+    <gap:splash src="res/screen/ios/splash@2x-640x960.png"      gap:platform="ios"     width="640" height="960" />
+    <gap:splash src="res/screen/ios/splash@2x-640x1136.png"     gap:platform="ios"     width="640" height="1136" />
+
     <!--
         Define access to external domains.
 
