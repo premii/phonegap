@@ -5,7 +5,7 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.premii.tiddlynotes"
         versionCode = "1"
-        version   = "1.0.2">
+        version   = "1.0.3">
 
     <name>Tiddly Notes</name>
     <description>
@@ -39,7 +39,7 @@
     <!-- Customize your app and platform with the preference element. -->
     <preference name="phonegap-version"           value="2.5.0" />          <!-- Removing this line, so that always build using latest phonegap built -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
-    <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
+    <preference name="target-device"              value="handset" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="false" />           <!-- all: hides the status bar at the top of the screen -->
     <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
     <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
@@ -70,6 +70,13 @@
     <icon src="res/icon/ios/Icon-72.png"            gap:platform="ios"        width="72" height="72" />
     <icon src="res/icon/ios/Icon@2x.png"         gap:platform="ios"        width="114" height="114" />
     <icon src="res/icon/ios/Icon-72@2x.png"         gap:platform="ios"        width="144" height="144" />
+
+    <!-- Define app splash screen for each platform. -->
+    <gap:splash src="res/screen/android/Elance_Splash.png" />
+    <gap:splash src="res/screen/android/Elance_Splash@2x.png"  gap:platform="android" gap:density="ldpi" />
+    <gap:splash src="res/screen/android/screen-mdpi-portrait.png"  gap:platform="android" gap:density="mdpi" />
+    <gap:splash src="res/screen/android/screen-hdpi-portrait.png"  gap:platform="android" gap:density="hdpi" />
+    <gap:splash src="res/screen/android/screen-xhdpi-portrait.png" gap:platform="android" gap:density="xhdpi" />
 
     <gap:splash src="res/screen/ios/splash-320x480.png"         gap:platform="ios" width="320"  height="480" />
     <gap:splash src="res/screen/ios/splash@2x-640x960.png"      gap:platform="ios" width="640"  height="960" />
