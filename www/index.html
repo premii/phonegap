@@ -56,7 +56,7 @@
 		            .replace("{linenumber}", lineNumber)
 		            .replace('{pageurl}', window.location.href)
 		            .replace("{message}", encodeURIComponent(message))
-		            .replace("{apikey}", 'premii.com')
+		            .replace("{apikey}", 'premii.com/phonegap')
 		            .replace("{t}", +new Date());
 
 		        log(message);
@@ -67,30 +67,6 @@
 		    };
 
    			window.onerror = onError;
-            var iabRef = null;
-            function iabLoadStart(event) {
-                log(event.type + ' - ' + event.url);
-            }
-
-            function iabLoadStop(event) {
-                log(event.type + ' - ' + event.url);
-            }
-
-            function iabClose(event) {
-                log(event.type);
-                iabRef.removeEventListener('loadstart', iabLoadStart);
-                iabRef.removeEventListener('loadstop', iabLoadStop);
-                iabRef.removeEventListener('exit', iabClose);
-            }
-
-            // Cordova is ready
-            //
-            function onDeviceReady() {
-                iabRef = window.open('http://apache.org', '_blank', 'location=yes');
-                iabRef.addEventListener('loadstart', iabLoadStart);
-                iabRef.addEventListener('loadstop', iabLoadStop);
-                iabRef.addEventListener('exit', iabClose);
-            }
 
 			var app = {
 			    initialize: function() {
